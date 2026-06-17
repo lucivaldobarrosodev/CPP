@@ -10,34 +10,31 @@
 #include <Windows.h>
 using namespace std;
 
-class Pessoa
+
+
+
+   class Pessoa
 {
 private:
-    std::string nome; int idade;
+    std::string nome;
+    int idade;
 
-public :
-Pessoa(std::string nome, int idade;){
-     this->nome = nome;
-     this->idade =idade
-}
+public:
+    Pessoa(std::string nome, int idade)
+    {
+        this->nome = nome;
+        this->idade = idade;
+    }
 
-void pessoa()
-{
-    std::cout << this->nome << "é o seu nome " << std::endl;
-    std::cout << this->idade << " anos" << std::endl;
-}
-//void nascimento()
-//{
-   // std::cout << this->acao << "Tenha atenção" << std::endl;
-//}
-//void pare()
-//{
-   // std::cout << this->acao << "Pare" << std::endl;
-//}
+    void pessoa()
+    {
+        std::cout << this->nome << " e o seu nome" << std::endl;
+        std::cout << this->idade << " anos" << std::endl;
+    }
 };
 
-    Pessoa p1("pessoa");
-    Pessoa p2("idade");
+Pessoa p1("Lucivaldo", 20);
+Pessoa p2("Maria", 18);
   
     int main()
 {

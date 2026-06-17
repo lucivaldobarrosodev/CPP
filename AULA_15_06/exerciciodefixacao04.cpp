@@ -1,8 +1,8 @@
-// aula 15.06.2026
+﻿// aula 15.06.2026
 // Aluno: Lucivaldo oliveira Barroso
 // Turma: Tarde
 //  Aula: Poo
-// chamada animal
+// Exercicio Cachorro
 
 #include <iostream>
 #include <string>
@@ -10,37 +10,35 @@
 #include <Windows.h>
 using namespace std;
 
-class Animal
+class Cachorro
 {
 private:
-    std::string especie;
-    std::string som;
+    std::string nome;
+    std::string raca;
 
 public:
-    Animal(std::string especie, std::string som)
+    Cachorro(std::string nome, std::string raca)
     {
-        this->especie = especie;
-        this->som = som;
+        this->nome = nome;
+        this->raca = raca;
     }
 
-    void emitir_som()
+    void latir()
     {
-        std::cout << "Este animal " << this->especie << " faz " << this->som << std::endl;
+        std::cout << "Au Au! O cachorro " << this->nome << " esta latindo." << std::endl;
     }
 };
 
-Animal animal1("Cachorro", "Au au");
-Animal animal2("gato", "miau miau");
-
-    int main()
+int main()
 {
     std::setlocale(LC_ALL, "");
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     setlocale(LC_ALL, ".UTF-8");
 
-    animal1.emitir_som();
-    animal2.emitir_som();
+    Cachorro cachorro1("Rex", "Pastor Alemao");
+
+    cachorro1.latir();
 
     return 0;
 }
