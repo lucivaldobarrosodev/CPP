@@ -1,5 +1,6 @@
 // ALUNO: LUCIVALDO OLIVEIRA BARROSO
 // TURMA: TARDE
+// Bolao da Copa 2026 - Atividade Pratica 2
 
 #include <iostream>
 #include <string>
@@ -17,9 +18,25 @@ public:
     int golsCasa;
     int golsFora;
 
+    Jogo()
+    {
+        this->timeCasa = "";
+        this->timeFora = "";
+        this->golsCasa = 0;
+        this->golsFora = 0;
+    }
+
+    Jogo(string timeCasa, string timeFora, int golsCasa, int golsFora)
+    {
+        this->timeCasa = timeCasa;
+        this->timeFora = timeFora;
+        this->golsCasa = golsCasa;
+        this->golsFora = golsFora;
+    }
+
     void exibir()
     {
-        cout << timeCasa << " " << golsCasa << " x " << golsFora << " " << timeFora << endl;
+        cout << this->timeCasa << " " << this->golsCasa << " x " << this->golsFora << " " << this->timeFora << endl;
     }
 };
 
@@ -40,13 +57,16 @@ public:
         this->palpites = new Jogo[this->qtdJogos];
     }
 
-    void cadastrarNome(string nome)
+    ~Apostador()
     {
-        this->nome = nome;
+        delete[] this->palpites;
     }
 
     void cadastrarPalpites(Jogo jogos[], int n)
     {
+        cout << "\nDigite o nome do apostador: ";
+        cin >> this->nome;
+
         cout << "\nPalpites de " << this->nome << endl;
 
         for (int i = 0; i < n; i++)
@@ -105,6 +125,26 @@ public:
                 {
                     this->pontuacao = this->pontuacao + 5;
                 }
+                else
+                {
+                    int diferencaReal = jogos[i].golsCasa - jogos[i].golsFora;
+                    int diferencaPalpite = this->palpites[i].golsCasa - this->palpites[i].golsFora;
+
+                    if (diferencaReal < 0)
+                    {
+                        diferencaReal = diferencaReal * -1;
+                    }
+
+                    if (diferencaPalpite < 0)
+                    {
+                        diferencaPalpite = diferencaPalpite * -1;
+                    }
+
+                    if (diferencaReal == diferencaPalpite)
+                    {
+                        this->pontuacao = this->pontuacao + 2;
+                    }
+                }
             }
         }
     }
@@ -118,21 +158,15 @@ public:
     {
         return this->pontuacao;
     }
-
-    void liberarMemoria()
-    {
-        delete[] this->palpites;
-    }
 };
 
 void mostrarMenu()
 {
-    cout << "\n=== SISTEMA DE BOLAO DA COPA ===" << endl;
-    cout << "1 - Cadastrar resultados dos jogos" << endl;
-    cout << "2 - Cadastrar palpites dos apostadores" << endl;
-    cout << "3 - Calcular pontuacao" << endl;
-    cout << "4 - Exibir ranking" << endl;
-    cout << "0 - Sair" << endl;
+    cout << "\n=== BOLAO DA COPA 2026 ===" << endl;
+    cout << "1 - Registrar resultados oficiais dos jogos" << endl;
+    cout << "2 - Registrar apostas dos jogadores" << endl;
+    cout << "3 - Calcular pontuacao e exibir ranking" << endl;
+    cout << "4 - Sair do programa" << endl;
     cout << "Escolha uma opcao: ";
 }
 
@@ -147,124 +181,98 @@ int main()
     Jogo jogosReais[4];
     Apostador* apostadores = new Apostador[3];
 
-    int opcao = -1;
-    int resultadosCadastrados = 0;
-    int palpitesCadastrados = 0;
-    int pontuacaoCalculada = 0;
+    int opcao = 0;
+    int resultadosRegistrados = 0;
+    int apostasRegistradas = 0;
 
-    apostadores[0].cadastrarNome("Joao");
-    apostadores[1].cadastrarNome("Maria");
-    apostadores[2].cadastrarNome("Pedro");
-
-    while (opcao != 0)
+    while (opcao != 4)
     {
         mostrarMenu();
         cin >> opcao;
 
         if (opcao == 1)
         {
+            jogosReais[0] = Jogo("BRA", "EGT", 3, 0);
+            jogosReais[1] = Jogo("RSA", "MAR", 1, 1);
+            jogosReais[2] = Jogo("FRA", "ARG", 1, 2);
+            jogosReais[3] = Jogo("GER", "COS", 4, 2);
+
+            resultadosRegistrados = 1;
+
+            cout << "\nResultados oficiais registrados:" << endl;
+
             for (int i = 0; i < 4; i++)
             {
-                cout << "\nJogo " << i + 1 << endl;
-                cout << "Time da casa: ";
-                cin >> jogosReais[i].timeCasa;
-                cout << "Time de fora: ";
-                cin >> jogosReais[i].timeFora;
-                cout << "Gols do " << jogosReais[i].timeCasa << ": ";
-                cin >> jogosReais[i].golsCasa;
-                cout << "Gols do " << jogosReais[i].timeFora << ": ";
-                cin >> jogosReais[i].golsFora;
+                cout << "Jogo " << i + 1 << ": ";
+                jogosReais[i].exibir();
             }
-
-            resultadosCadastrados = 1;
-            pontuacaoCalculada = 0;
         }
         else
         {
             if (opcao == 2)
             {
-                if (resultadosCadastrados == 1)
+                if (resultadosRegistrados == 1)
                 {
                     for (int i = 0; i < 3; i++)
                     {
                         apostadores[i].cadastrarPalpites(jogosReais, 4);
                     }
 
-                    palpitesCadastrados = 1;
-                    pontuacaoCalculada = 0;
+                    apostasRegistradas = 1;
                 }
                 else
                 {
-                    cout << "Cadastre primeiro os resultados dos jogos." << endl;
+                    cout << "Registre primeiro os resultados oficiais dos jogos." << endl;
                 }
             }
             else
             {
                 if (opcao == 3)
                 {
-                    if (resultadosCadastrados == 1 && palpitesCadastrados == 1)
+                    if (resultadosRegistrados == 1 && apostasRegistradas == 1)
                     {
                         for (int i = 0; i < 3; i++)
                         {
                             apostadores[i].calcularPontuacao(jogosReais, 4);
                         }
 
-                        pontuacaoCalculada = 1;
-                        cout << "Pontuacao calculada." << endl;
+                        int ranking[3] = {0, 1, 2};
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            for (int j = i + 1; j < 3; j++)
+                            {
+                                if (apostadores[ranking[j]].getPontuacao() > apostadores[ranking[i]].getPontuacao())
+                                {
+                                    int aux = ranking[i];
+                                    ranking[i] = ranking[j];
+                                    ranking[j] = aux;
+                                }
+                            }
+                        }
+
+                        cout << "\n=== RANKING DO BOLAO ===" << endl;
+                        cout << "Colocacao - Nome - Pontuacao" << endl;
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            cout << i + 1 << " - " << apostadores[ranking[i]].getNome() << " - " << apostadores[ranking[i]].getPontuacao() << " pontos" << endl;
+                        }
                     }
                     else
                     {
-                        cout << "Cadastre os resultados e os palpites primeiro." << endl;
+                        cout << "Registre os resultados e as apostas primeiro." << endl;
                     }
                 }
                 else
                 {
-                    if (opcao == 4)
+                    if (opcao != 4)
                     {
-                        if (pontuacaoCalculada == 1)
-                        {
-                            int ranking[3] = {0, 1, 2};
-
-                            for (int i = 0; i < 2; i++)
-                            {
-                                for (int j = i + 1; j < 3; j++)
-                                {
-                                    if (apostadores[ranking[j]].getPontuacao() > apostadores[ranking[i]].getPontuacao())
-                                    {
-                                        int aux = ranking[i];
-                                        ranking[i] = ranking[j];
-                                        ranking[j] = aux;
-                                    }
-                                }
-                            }
-
-                            cout << "\n=== RANKING DO BOLAO ===" << endl;
-
-                            for (int i = 0; i < 3; i++)
-                            {
-                                cout << i + 1 << " - " << apostadores[ranking[i]].getNome() << " - " << apostadores[ranking[i]].getPontuacao() << " pontos" << endl;
-                            }
-                        }
-                        else
-                        {
-                            cout << "Calcule a pontuacao primeiro." << endl;
-                        }
-                    }
-                    else
-                    {
-                        if (opcao != 0)
-                        {
-                            cout << "Opcao invalida." << endl;
-                        }
+                        cout << "Opcao invalida." << endl;
                     }
                 }
             }
         }
-    }
-
-    for (int i = 0; i < 3; i++)
-    {
-        apostadores[i].liberarMemoria();
     }
 
     delete[] apostadores;
